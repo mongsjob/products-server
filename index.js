@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 app.use(
     cors({
-        origin: ["http://localhost:5174", "http://localhost:5173"],
+        origin: ["http://localhost:5174", "https://products-admin.onrender.com", "https://products-requirements.onrender.com", "http://localhost:5173"],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
           credentials: true,
           allowedHeaders: ["Content-Type", "Authorization"],
