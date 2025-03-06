@@ -21,7 +21,7 @@ app.use(cors({
 }));
 
 // Handle Preflight Requests
-app.options('*', cors());
+// app.options('*', cors());
 
 // Middleware
 app.use(express.json());
@@ -50,36 +50,3 @@ main()
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-
-// Root endpoint (moved outside main())
-// app.get('/', (req, res) => {
-//   res.send('Docs running successfully!');
-// });
-
-// MongoDB Connection
-// main().then(() => console.log("MongoDB connected successfully")).catch(err => console.log(err));
-
-// async function main() {
-//   try {
-//     await mongoose.connect(process.env.MONGODB_URL);
-//     console.log("MongoDB connected successfully");
-    
-//     // Start the server *after* MongoDB is connected
-//     app.listen(port, () => {
-//       console.log(`Server running on port ${port}`);
-//     });
-
-//   } catch (err) {
-//     console.error("MongoDB connection error:", err);
-//   }
-// }
-
-// async function main() {
-//   await mongoose.connect(process.env.MONGODB_URL);
-// }
-
-// Start Server
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`);
-// });
