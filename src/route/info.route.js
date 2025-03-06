@@ -5,17 +5,25 @@ const router = express.Router();
 
 router.post('/create-post', async (req, res) => {
     try {
-        const newPost = new Info({...req.body});
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and Password required" });
+        }
+
+        const newPost = new Info({ email, password });
         await newPost.save();
-        res.status(201).send({
+
+        res.status(201).json({
             message: 'Post created successfully',
             post: newPost
-        })
+        });
     } catch (error) {
-        console.error('Error creating post', error);
-        res.status(500).send({ message: 'Error creating post' });
+        console.error('Error creating post:', error);
+        res.status(500).json({ message: 'Error creating post', error: error.message });
     }
-})
+});
+
 // get all posts
 
 router.get('/', async (req, res) => {

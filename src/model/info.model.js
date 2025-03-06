@@ -10,8 +10,12 @@ const InfoSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
-  });
+});
 
   const Info = mongoose.model('Info', InfoSchema);
 
