@@ -16,8 +16,8 @@ app.use(cors({
   ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true, // ✅ Ensures cookies are sent in cross-origin requests
-  allowedHeaders: ["Content-Type", "Authorization"],
-  exposedHeaders: ["Authorization"] // ✅ Exposes Authorization header for frontend
+  // allowedHeaders: ["Content-Type", "Authorization"],
+  // exposedHeaders: ["Authorization"] // ✅ Exposes Authorization header for frontend
 }));
 
 // Handle Preflight Requests
@@ -35,29 +35,45 @@ const authRoute = require('./src/route/auth.user.route');
 
 app.use('/api/info', infoRoute);
 app.use('/api/auth', authRoute);
+async function main() {
+  await mongoose.connect(process.env.MONGODB_URL);
 
-// Root endpoint (moved outside main())
-app.get('/', (req, res) => {
-  res.send('Docs running successfully!');
+  app.get("/", (req, res) => {
+    res.send("Docs running successfully!");
+  });
+}
+
+main()
+  .then(() => console.log("Mongodb connected successfully!"))
+  .catch((err) => console.log(err));
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
 
+
+// Root endpoint (moved outside main())
+// app.get('/', (req, res) => {
+//   res.send('Docs running successfully!');
+// });
+
 // MongoDB Connection
-main().then(() => console.log("MongoDB connected successfully")).catch(err => console.log(err));
+// main().then(() => console.log("MongoDB connected successfully")).catch(err => console.log(err));
 
-async function main() {
-  try {
-    await mongoose.connect(process.env.MONGODB_URL);
-    console.log("MongoDB connected successfully");
+// async function main() {
+//   try {
+//     await mongoose.connect(process.env.MONGODB_URL);
+//     console.log("MongoDB connected successfully");
     
-    // Start the server *after* MongoDB is connected
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
+//     // Start the server *after* MongoDB is connected
+//     app.listen(port, () => {
+//       console.log(`Server running on port ${port}`);
+//     });
 
-  } catch (err) {
-    console.error("MongoDB connection error:", err);
-  }
-}
+//   } catch (err) {
+//     console.error("MongoDB connection error:", err);
+//   }
+// }
 
 // async function main() {
 //   await mongoose.connect(process.env.MONGODB_URL);
