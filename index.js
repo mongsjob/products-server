@@ -16,12 +16,12 @@ app.use(cors({
   ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true, // ✅ Ensures cookies are sent in cross-origin requests
-  // allowedHeaders: ["Content-Type", "Authorization"],
-  // exposedHeaders: ["Authorization"] // ✅ Exposes Authorization header for frontend
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Authorization"] // ✅ Exposes Authorization header for frontend
 }));
 
 // Handle Preflight Requests
-// app.options('*', cors());
+app.options('*', cors());
 
 // Middleware
 app.use(express.json());
