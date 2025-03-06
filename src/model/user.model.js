@@ -19,6 +19,14 @@ const userSchema = new Schema({
         default: Date.now
     }
 });
+// hash password before saving to database
+userSchema.pre('save', async function(next){
+    const user = this;
+    if(!user.isModified('password')) return next();
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
+    next();
+})
 
 // compare password when user tries to login
 userSchema.methods.comparePassword = function(givenPassword){
