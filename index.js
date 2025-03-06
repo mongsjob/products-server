@@ -7,12 +7,17 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const port = process.env.PORT || 3000;
 
-// Enable CORS before defining routes
 app.use(cors({
-    origin: ["http://localhost:5174", "https://products-admin.onrender.com", "https://products-requirements.onrender.com", "http://localhost:5173"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"]
+  origin: [
+      "http://localhost:5174",
+      "https://products-admin.onrender.com",
+      "https://products-requirements.onrender.com",
+      "http://localhost:5173"
+  ],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  credentials: true, // ✅ Ensures cookies are sent in cross-origin requests
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Authorization"] // ✅ Exposes Authorization header for frontend
 }));
 
 // Handle Preflight Requests
@@ -40,10 +45,25 @@ app.get('/', (req, res) => {
 main().then(() => console.log("MongoDB connected successfully")).catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(process.env.MONGODB_URL);
+  try {
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log("MongoDB connected successfully");
+    
+    // Start the server *after* MongoDB is connected
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+  }
 }
 
+// async function main() {
+//   await mongoose.connect(process.env.MONGODB_URL);
+// }
+
 // Start Server
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
