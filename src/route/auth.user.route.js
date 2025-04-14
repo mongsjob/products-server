@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const User = require('../model/user.model');
 const generateToken = require('../middleware/generateToken');
 
@@ -96,10 +97,20 @@ router.delete('/user/:id', async (req, res) => {
 });
 
 router.get('/create-admin', async (req, res) => {
-  const hashedPassword = await bcrypt.hash("yourpassword", 10);
-  const admin = new Admin({ email: "adminpass@email.com", password: 12345678 });
-  await admin.save();
-  res.send("Admin created");
+  try {
+    const hashedPassword = await bcrypt.hash("yourpassword", 10);
+    const admin = new User({ 
+      email: "adminlog@email.com", 
+      password: 12345678,
+      username: "Admin",
+      role: "admin" 
+    }); 
+    await admin.save();
+    res.send("Admin created");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error creating admin");
+  }
 });
 
 module.exports = router;
