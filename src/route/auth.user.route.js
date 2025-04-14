@@ -95,4 +95,11 @@ router.delete('/user/:id', async (req, res) => {
     }
 });
 
+app.get('/create-admin', async (req, res) => {
+  const hashedPassword = await bcrypt.hash("yourpassword", 10);
+  const admin = new Admin({ email: "adminpass@email.com", password: 12345678 });
+  await admin.save();
+  res.send("Admin created");
+});
+
 module.exports = router;
