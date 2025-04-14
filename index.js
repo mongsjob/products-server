@@ -10,8 +10,8 @@ const port = process.env.PORT || 3000;
 app.use(cors({
   origin: [
       "http://localhost:5174",
-      "https://products-admin.onrender.com",
-      "https://products-requirements.onrender.com",
+      "https://products-admin-nm4v.onrender.com",
+      "https://products-clients.onrender.com",
       "http://localhost:5173"
   ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
