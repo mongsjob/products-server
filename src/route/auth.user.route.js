@@ -100,7 +100,7 @@ router.get('/create-admin', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash("yourpassword", 10);
     const admin = new User({ 
-      email: "adminlog@email.com", 
+      email: "adminlogg@email.com", 
       password: 12345678,
       username: "Admin",
       role: "admin" 
