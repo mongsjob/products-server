@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const User = require('../model/user.model');
 const generateToken = require('../middleware/generateToken');
 
@@ -98,18 +97,23 @@ router.delete('/user/:id', async (req, res) => {
 
 router.get('/create-admin', async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash("yourpassword", 10);
-    const admin = new User({ 
-      email: "adminlogg@email.com", 
-      password: 12345678,
-      username: "Admin",
-      role: "admin" 
-    }); 
+    const adminExists = await User.findOne({ email: 'adminlog@email.com' });
+    if (adminExists) {
+      return res.status(400).json({ message: 'Admin already exists' });
+    }
+
+    const admin = new User({
+      email: 'adminlog@email.com',
+      password: '12345678', // this will be hashed automatically
+      username: 'adminlog',
+      role: 'admin'
+    });
+
     await admin.save();
-    res.send("Admin created");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error creating admin");
+    res.status(201).json({ message: 'Admin created successfully', admin });
+  } catch (error) {
+    console.error('Failed to create admin', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
